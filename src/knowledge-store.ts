@@ -10,12 +10,13 @@ export interface SourceAnchor {
 }
 
 export class KnowledgeStore {
+	readonly projectDir: string;
 	readonly anchorsPath: string;
 
 	constructor(rootDir: string, projectId: string) {
-		const projectDir = join(rootDir, "projects", projectDirectoryName(projectId));
-		mkdirSync(projectDir, { recursive: true });
-		this.anchorsPath = join(projectDir, "source-anchors.jsonl");
+		this.projectDir = join(rootDir, "projects", projectDirectoryName(projectId));
+		mkdirSync(this.projectDir, { recursive: true });
+		this.anchorsPath = join(this.projectDir, "source-anchors.jsonl");
 	}
 
 	captureAnchors(sessionFile: string | undefined, sessionId: string, entries: { id: string }[]): number {

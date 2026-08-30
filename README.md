@@ -9,8 +9,9 @@ This package is under active development.
 - records each Pi session file, entry ID, and canonical SHA-256 content hash as a source anchor
 - resolves and verifies anchors against Pi’s native session JSONL evidence
 - exposes `/wiki-status` and `/wiki-verify`
+- exposes manual `/wiki-dream`, which proposes one wiki page from bounded, verified project evidence and writes it only after approval
 
-[WIKI_SCHEMA.md](WIKI_SCHEMA.md) defines the minimal wiki format. Not implemented yet: wiki pages, `/wiki-dream`, skill proposals, evaluation, rollback, and automation.
+[WIKI_SCHEMA.md](WIKI_SCHEMA.md) defines the minimal wiki format. Not implemented yet: skill proposals, evaluation, rollback, and automation.
 
 ## Install
 

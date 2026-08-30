@@ -9,10 +9,11 @@
     "extensions": ["./src/index.ts"]
   },
   "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
     "@earendil-works/pi-coding-agent": "*"
   },
   "scripts": {
-    "check": "node --experimental-strip-types --check src/knowledge-store.ts && node --experimental-strip-types --check src/source-resolver.ts && node --experimental-strip-types --check src/index.ts",
+    "check": "node --experimental-strip-types --check src/dream.ts && node --experimental-strip-types --check src/knowledge-store.ts && node --experimental-strip-types --check src/source-resolver.ts && node --experimental-strip-types --check src/wiki-store.ts && node --experimental-strip-types --check src/index.ts",
     "test": "node --test test/*.test.ts"
   },
   "license": "MIT"

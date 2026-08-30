@@ -4,10 +4,9 @@ Append one entry for every completed implementation milestone. Keep completed en
 
 ## Planned Work
 
-1. **Manual wiki dream** — select bounded, verified project traces; have an LLM propose a concise wiki patch; let the user accept or reject it.
-2. **Inactive skill proposals** — derive candidate skill changes from accepted wiki patterns without activation.
-3. **Evaluation and approval** — add a project-specific evaluator, rollback, and explicit promotion approval.
-4. **Automation** — opt-in scheduling only after the manual flow proves useful; it never bypasses approval.
+1. **Inactive skill proposals** — derive candidate skill changes from accepted wiki patterns without activation.
+2. **Evaluation and approval** — add a project-specific evaluator, rollback, and explicit promotion approval.
+3. **Automation** — opt-in scheduling only after the manual flow proves useful; it never bypasses approval.
 
 ## 2026-08-30 — Provenance-backed foundation
 
@@ -53,3 +52,9 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 - Retained Pi-native source anchors, exact-file verification, `/wiki-status`, and `/wiki-verify`.
 - Replaced the premature cycle, outcome, and promotion schema with a minimal reviewed-wiki contract in [WIKI_SCHEMA.md](WIKI_SCHEMA.md).
 - Deliberate boundary: manual `/wiki-dream` is the next feature; outcome oracles, evaluators, and automation remain deferred.
+
+## 2026-08-30 — Manual wiki dream
+
+- Added `/wiki-dream`: it reads up to eight verified project anchors, bounds trace and existing-wiki context, and asks the selected Pi model for one JSON pattern proposal.
+- The proposal is rendered as a Markdown page and requires explicit user approval before a new pattern page and append-only evolution entry are written.
+- Deliberate boundary: it creates one new page only. It does not update pages, classify outcomes, propose skills, or run automatically.
