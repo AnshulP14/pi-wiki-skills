@@ -14,7 +14,7 @@ This package is under active development.
 - exposes `/wiki-status` for current claim and source-anchor counts
 - exposes `/wiki-verify` to verify every anchor’s session file, session ID, entry ID, and hash
 
-Not implemented yet: wiki pattern pages, `/wiki-dream`, skill proposals, evaluation, rollback, and automatic promotion.
+The on-disk wiki contract is defined in [WIKI_SCHEMA.md](WIKI_SCHEMA.md). Not implemented yet: the wiki-store writer, wiki pattern pages, `/wiki-dream`, skill proposals, evaluation, rollback, and automatic promotion.
 
 ## Install
 

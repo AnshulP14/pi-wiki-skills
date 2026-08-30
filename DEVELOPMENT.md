@@ -4,7 +4,7 @@ Append one entry for every completed implementation milestone. Keep completed en
 
 ## Planned Work
 
-1. **Persistent wiki store** — Markdown pattern pages plus append-only evolution and skill-impact logs.
+1. **Persistent wiki store** — schema defined in [WIKI_SCHEMA.md](WIKI_SCHEMA.md); writer implementation pending.
 2. **Evidence selection** — bounded sampling of verified successful and failed traces for a dream cycle.
 3. **`/wiki-dream`** — an LLM maintainer that makes minimal, evidence-backed wiki patches.
 4. **Versioned skill proposals** — derive candidate skill changes from wiki patterns without activating them.
@@ -37,3 +37,8 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 - Added a read-only resolver that validates the session header, entry ID, and canonical SHA-256 content hash.
 - Added `/wiki-verify`.
 - Verified five focused tests, the monorepo check, and a live GPT 5.6 Terra run with 4/4 anchors resolved and verified.
+
+## 2026-08-30 — Wiki store schema
+
+- Defined the v1 Markdown layout, pattern-page metadata, provenance references, and append-only evolution and skill-impact log formats in [WIKI_SCHEMA.md](WIKI_SCHEMA.md).
+- Deliberate boundary: this documents the storage contract only; no wiki writer or LLM behavior exists yet.
