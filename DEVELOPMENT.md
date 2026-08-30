@@ -1,6 +1,16 @@
 # Development Ledger
 
-Append one entry for every completed implementation milestone. Keep this ledger append-only: record the behavior delivered, evidence of verification, and any deliberate boundary. Add the entry before committing the milestone.
+Append one entry for every completed implementation milestone. Keep completed entries append-only: record the behavior delivered, evidence of verification, and any deliberate boundary. Add the entry before committing the milestone. Keep the planned-work list current; move completed work into a dated entry below rather than deleting it.
+
+## Planned Work
+
+1. **Persistent wiki store** — Markdown pattern pages plus append-only evolution and skill-impact logs.
+2. **Evidence selection** — bounded sampling of verified successful and failed traces for a dream cycle.
+3. **`/wiki-dream`** — an LLM maintainer that makes minimal, evidence-backed wiki patches.
+4. **Versioned skill proposals** — derive candidate skill changes from wiki patterns without activating them.
+5. **Evaluation gate** — sandbox tasks, regression checks, scores, and safety validation for each candidate.
+6. **Promotion and rollback** — activate only accepted candidates and retain the last accepted skill version.
+7. **Automation and retention** — threshold/scheduled cycles, observability, and evidence/wiki maintenance rules.
 
 ## 2026-08-30 — Provenance-backed foundation
 
