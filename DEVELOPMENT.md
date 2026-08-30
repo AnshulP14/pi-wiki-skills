@@ -41,7 +41,7 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 
 ## 2026-08-30 — Manual approval and cycle policy
 
-- Defined [CYCLE_POLICY.md](CYCLE_POLICY.md): trace content is untrusted data, evidence requires a configured outcome oracle, and cycle state must be recoverable and locked per project.
+- Defined `CYCLE_POLICY.md` (later removed during the Ponytail simplification): trace content is untrusted data, evidence requires a configured outcome oracle, and cycle state must be recoverable and locked per project.
 - Made manual reviewer approval a mandatory promotion gate; evaluation success alone can never activate a candidate skill.
 - Extended [WIKI_SCHEMA.md](WIKI_SCHEMA.md) with cycle artifacts and page maintenance metadata.
 - Deliberate boundary: this is a policy and schema milestone. No dream, proposal, evaluator, or promotion command exists yet.
@@ -49,6 +49,7 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 ## 2026-08-30 — Ponytail simplification
 
 - Removed the unused generic claim ledger and its merge/rejection machinery; the Markdown wiki will be the only derived-knowledge layer.
+- Removed `CYCLE_POLICY.md`; its manual-approval and trust-boundary rules remain the intended contract for the deferred skill-proposal, evaluation, and automation milestones.
 - Retained Pi-native source anchors, exact-file verification, `/wiki-status`, and `/wiki-verify`.
 - Replaced the premature cycle, outcome, and promotion schema with a minimal reviewed-wiki contract in [WIKI_SCHEMA.md](WIKI_SCHEMA.md).
 - Deliberate boundary: manual `/wiki-dream` is the next feature; outcome oracles, evaluators, and automation remain deferred.
