@@ -1,6 +1,7 @@
-import { createHash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { hashSourceEntry } from "./source-resolver.ts";
 
 export type ClaimStatus = "current" | "superseded" | "rejected";
 
@@ -38,6 +39,7 @@ interface MergeClaimsEvent {
 }
 
 export interface SourceAnchor {
+	sessionFile: string;
 	sessionId: string;
 	entryId: string;
 	contentHash: string;
@@ -97,14 +99,16 @@ export class KnowledgeStore {
 		return [...this.claims().values()].filter((claim) => claim.status === "current");
 	}
 
-	captureAnchors(sessionId: string, entries: { id: string }[]): number {
+	captureAnchors(sessionFile: string | undefined, sessionId: string, entries: { id: string }[]): number {
+		if (!sessionFile) return 0;
 		const capturedIds = new Set(this.sourceAnchors().map((anchor) => `${anchor.sessionId}\u0000${anchor.entryId}`));
 		const unseen = entries.filter((entry) => !capturedIds.has(`${sessionId}\u0000${entry.id}`));
 		for (const entry of unseen) {
 			const anchor: SourceAnchor = {
+				sessionFile: resolve(sessionFile),
 				sessionId,
 				entryId: entry.id,
-				contentHash: createHash("sha256").update(JSON.stringify(entry)).digest("hex"),
+				contentHash: hashSourceEntry(entry),
 			};
 			appendFileSync(this.anchorsPath, `${JSON.stringify(anchor)}\n`, "utf8");
 		}
@@ -113,6 +117,15 @@ export class KnowledgeStore {
 
 	sourceAnchorCount(): number {
 		return this.sourceAnchors().length;
+	}
+
+	sourceAnchors(): SourceAnchor[] {
+		if (!existsSync(this.anchorsPath)) return [];
+		return readFileSync(this.anchorsPath, "utf8")
+			.trim()
+			.split("\n")
+			.filter(Boolean)
+			.map((line) => JSON.parse(line) as SourceAnchor);
 	}
 
 	private requireCurrentClaim(claimId: string): Claim {
@@ -143,15 +156,6 @@ export class KnowledgeStore {
 			claims.set(event.claimId, { ...claim, status: event.status, reason: event.reason });
 		}
 		return claims;
-	}
-
-	private sourceAnchors(): SourceAnchor[] {
-		if (!existsSync(this.anchorsPath)) return [];
-		return readFileSync(this.anchorsPath, "utf8")
-			.trim()
-			.split("\n")
-			.filter(Boolean)
-			.map((line) => JSON.parse(line) as SourceAnchor);
 	}
 
 	private events(): KnowledgeEvent[] {

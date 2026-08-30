@@ -6,12 +6,13 @@ This package is under active development.
 
 ## Current capabilities
 
-- records stable Pi session/entry source anchors and SHA-256 content hashes
-- keeps Pi’s native session JSONL as the raw evidence
+- records each Pi session file, entry ID, and canonical SHA-256 content hash as a source anchor
+- resolves and verifies anchors against Pi’s native session JSONL evidence
 - records claims in an append-only JSONL ledger
 - preserves source session and entry IDs when claims are merged
 - applies a merge as one atomic ledger event
 - exposes `/wiki-status` for current claim and source-anchor counts
+- exposes `/wiki-verify` to verify every anchor’s session file, session ID, entry ID, and hash
 
 Not implemented yet: wiki pattern pages, `/wiki-dream`, skill proposals, evaluation, rollback, and automatic promotion.
 
