@@ -4,7 +4,7 @@
   "description": "Evidence-backed memory dreaming and skill evolution for Pi",
   "type": "module",
   "keywords": ["pi-package", "pi-extension", "agent-memory", "skills"],
-  "files": ["src", "README.md", "LICENSE", "WIKI_SCHEMA.md"],
+  "files": ["src", "README.md", "LICENSE", "WIKI_SCHEMA.md", "CYCLE_POLICY.md"],
   "pi": {
     "extensions": ["./src/index.ts"]
   },

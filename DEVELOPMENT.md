@@ -4,13 +4,15 @@ Append one entry for every completed implementation milestone. Keep completed en
 
 ## Planned Work
 
-1. **Persistent wiki store** — schema defined in [WIKI_SCHEMA.md](WIKI_SCHEMA.md); writer implementation pending.
-2. **Evidence selection** — bounded sampling of verified successful and failed traces for a dream cycle.
-3. **`/wiki-dream`** — an LLM maintainer that makes minimal, evidence-backed wiki patches.
-4. **Versioned skill proposals** — derive candidate skill changes from wiki patterns without activating them.
-5. **Evaluation gate** — sandbox tasks, regression checks, scores, and safety validation for each candidate.
-6. **Promotion and rollback** — activate only accepted candidates and retain the last accepted skill version.
-7. **Automation and retention** — threshold/scheduled cycles, observability, and evidence/wiki maintenance rules.
+0. **Trust, outcome, and cycle contract** — implement the policy in [CYCLE_POLICY.md](CYCLE_POLICY.md): untrusted-data handling, configured success/failure oracles, persistent recoverable cycle state, and a project lock.
+1. **Persistent wiki store** — implement the schema in [WIKI_SCHEMA.md](WIKI_SCHEMA.md), including pattern maintenance, contradiction handling, and stale-page retirement.
+2. **Evidence selection** — bounded sampling of verified, non-ambiguous successful and failed traces for a dream cycle.
+3. **Manual `/wiki-dream`** — an LLM maintainer that creates reviewable, minimal, evidence-backed wiki patches.
+4. **Versioned inactive skill proposals** — derive candidate skill changes from wiki patterns without activation.
+5. **Deterministic evaluation and safety gate** — baseline, held-out tasks, thresholds, time/cost limits, regression tolerance, and static safety checks.
+6. **Manual promotion and rollback** — show the reviewer the evidence, patches, diff, evaluation, and rollback target; activate only explicit approvals.
+7. **Observability, governance, and tests** — status metrics, migration/export/reset/retention, security and failure tests, and package documentation.
+8. **Opt-in automation** — only after the manual evaluator and approval flow are reliable; scheduling never bypasses the approval gate.
 
 ## 2026-08-30 — Provenance-backed foundation
 
@@ -42,3 +44,10 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 
 - Defined the v1 Markdown layout, pattern-page metadata, provenance references, and append-only evolution and skill-impact log formats in [WIKI_SCHEMA.md](WIKI_SCHEMA.md).
 - Deliberate boundary: this documents the storage contract only; no wiki writer or LLM behavior exists yet.
+
+## 2026-08-30 — Manual approval and cycle policy
+
+- Defined [CYCLE_POLICY.md](CYCLE_POLICY.md): trace content is untrusted data, evidence requires a configured outcome oracle, and cycle state must be recoverable and locked per project.
+- Made manual reviewer approval a mandatory promotion gate; evaluation success alone can never activate a candidate skill.
+- Extended [WIKI_SCHEMA.md](WIKI_SCHEMA.md) with cycle artifacts and page maintenance metadata.
+- Deliberate boundary: this is a policy and schema milestone. No dream, proposal, evaluator, or promotion command exists yet.

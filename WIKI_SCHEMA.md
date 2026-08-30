@@ -16,6 +16,8 @@ its wiki lives at:
 wiki/
 ├── patterns/
 │   └── <pattern-id>.md
+├── cycles/
+│   └── <cycle-id>.json
 ├── evolution.md
 └── skill-impact.md
 ```
@@ -30,10 +32,15 @@ Each page is one reusable success or failure pattern. It begins with YAML front 
 ---
 id: "018f..."
 kind: "success" # "success" | "failure"
-status: "active" # "active" | "superseded"
+status: "active" # "active" | "superseded" | "retired"
 title: "Verify an anchor before using it as evidence"
+scope: "Pi session evidence resolution"
+confidence: "high" # "low" | "medium" | "high"
+applicability: "When using Pi session entries as evidence."
+counterexamples: "Do not use when the source anchor is unresolved."
 createdAt: "2026-08-30T00:00:00.000Z"
 updatedAt: "2026-08-30T00:00:00.000Z"
+lastVerifiedAt: "2026-08-30T00:00:00.000Z"
 sources:
   - sessionId: "01a..."
     entryIds: ["a1b2c3d4", "e5f6a7b8"]
@@ -80,16 +87,21 @@ Allowed operations are `create-pattern`, `update-pattern`, and `supersede-patter
 ```md
 ## 2026-08-30T00:00:00.000Z — proposal <proposal-id>
 
+- Cycle: `<cycle-id>`
 - Based on patterns: `018f...`
 - Candidate skill version: `<version>`
-- Validation: pending | accepted | rejected
+- Validation: pending | passed | failed
+- Reviewer decision: pending | approved | rejected | aborted
 - Score: `<score or n/a>`
 - Rollback target: `<last accepted version or n/a>`
 ```
 
+A passed validation never activates a skill by itself. The approval rules are defined in [CYCLE_POLICY.md](CYCLE_POLICY.md).
+
 ## Invariants
 
-- Pattern IDs, log timestamps, and source references are machine-readable and stable.
+- Pattern IDs, cycle IDs, log timestamps, and source references are machine-readable and stable.
 - Pattern pages may be revised only through a logged wiki operation.
-- Both logs are append-only.
+- Both logs and cycle transition records are append-only.
 - Missing or unverifiable source anchors must not be used to create or update a pattern.
+- A candidate skill remains inactive until a reviewer explicitly approves it under the cycle policy.
