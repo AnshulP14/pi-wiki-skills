@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -69,22 +70,29 @@ test("reopening the store reconstructs current and superseded claims from its ap
 	assert.deepEqual(reopened.currentClaims(), []);
 });
 
-test("captures each session entry once without overwriting its first snapshot", () => {
+test("records each session entry once as a source anchor without copying its content", () => {
 	const store = new KnowledgeStore(root, "example-project");
 	const first = { id: "entry-1", message: "initial" };
-	assert.equal(store.captureEntries("session-a", [first]), 1);
-	assert.equal(store.captureEntries("session-a", [{ id: "entry-1", message: "changed" }, { id: "entry-2" }]), 1);
+	assert.equal(store.captureAnchors("session-a", [first]), 1);
+	assert.equal(store.captureAnchors("session-a", [{ id: "entry-1", message: "changed" }, { id: "entry-2" }]), 1);
 
-	const tracePath = join(store.tracesDir, readdirSync(store.tracesDir)[0]);
-	const records = readFileSync(tracePath, "utf8")
+	const anchors = readFileSync(store.anchorsPath, "utf8")
 		.trim()
 		.split("\n")
 		.map((line) => JSON.parse(line));
-	assert.deepEqual(records, [
-		{ sessionId: "session-a", entryId: "entry-1", entry: first },
-		{ sessionId: "session-a", entryId: "entry-2", entry: { id: "entry-2" } },
+	assert.deepEqual(anchors, [
+		{
+			sessionId: "session-a",
+			entryId: "entry-1",
+			contentHash: createHash("sha256").update(JSON.stringify(first)).digest("hex"),
+		},
+		{
+			sessionId: "session-a",
+			entryId: "entry-2",
+			contentHash: createHash("sha256").update(JSON.stringify({ id: "entry-2" })).digest("hex"),
+		},
 	]);
-	assert.equal(store.capturedEntryCount(), 2);
+	assert.equal(store.sourceAnchorCount(), 2);
 });
 
 test("project identifiers cannot escape the store root", () => {

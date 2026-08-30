@@ -7,7 +7,7 @@ const storageRoot = join(getAgentDir(), "pi-wiki-skills");
 export default function (pi: ExtensionAPI) {
 	pi.on("agent_end", (_event, ctx) => {
 		const store = new KnowledgeStore(storageRoot, ctx.cwd);
-		store.captureEntries(ctx.sessionManager.getSessionId(), ctx.sessionManager.getBranch());
+		store.captureAnchors(ctx.sessionManager.getSessionId(), ctx.sessionManager.getBranch());
 	});
 
 	pi.registerCommand("wiki-status", {
@@ -15,9 +15,9 @@ export default function (pi: ExtensionAPI) {
 		handler: async (_args, ctx) => {
 			const store = new KnowledgeStore(storageRoot, ctx.cwd);
 			const claims = store.currentClaims();
-			const entries = store.capturedEntryCount();
+			const anchors = store.sourceAnchorCount();
 			ctx.ui.notify(
-				`Wiki Skills: ${claims.length} current claim${claims.length === 1 ? "" : "s"}; ${entries} captured entr${entries === 1 ? "y" : "ies"}.`,
+				`Wiki Skills: ${claims.length} current claim${claims.length === 1 ? "" : "s"}; ${anchors} source anchor${anchors === 1 ? "" : "s"}.`,
 				"info",
 			);
 		},

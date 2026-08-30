@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export type ClaimStatus = "current" | "superseded" | "rejected";
@@ -37,23 +37,23 @@ interface MergeClaimsEvent {
 	inputIds: string[];
 }
 
-export interface TraceRecord {
+export interface SourceAnchor {
 	sessionId: string;
 	entryId: string;
-	entry: unknown;
+	contentHash: string;
 }
 
 type KnowledgeEvent = CreateClaimEvent | ClaimStatusEvent | MergeClaimsEvent;
 
 export class KnowledgeStore {
 	readonly eventsPath: string;
-	readonly tracesDir: string;
+	readonly anchorsPath: string;
 
 	constructor(rootDir: string, projectId: string) {
 		const projectDir = join(rootDir, "projects", projectDirectoryName(projectId));
-		this.tracesDir = join(projectDir, "traces");
-		mkdirSync(this.tracesDir, { recursive: true });
+		mkdirSync(projectDir, { recursive: true });
 		this.eventsPath = join(projectDir, "events.jsonl");
+		this.anchorsPath = join(projectDir, "source-anchors.jsonl");
 	}
 
 	createClaim(input: Omit<Claim, "id" | "derivedFrom" | "status">): Claim {
@@ -97,29 +97,22 @@ export class KnowledgeStore {
 		return [...this.claims().values()].filter((claim) => claim.status === "current");
 	}
 
-	captureEntries(sessionId: string, entries: { id: string }[]): number {
-		const path = join(this.tracesDir, `${createHash("sha256").update(sessionId).digest("hex")}.jsonl`);
-		const capturedIds = existsSync(path)
-			? new Set(
-					readFileSync(path, "utf8")
-						.trim()
-						.split("\n")
-						.filter(Boolean)
-						.map((line) => (JSON.parse(line) as TraceRecord).entryId),
-				)
-			: new Set<string>();
-		const unseen = entries.filter((entry) => !capturedIds.has(entry.id));
+	captureAnchors(sessionId: string, entries: { id: string }[]): number {
+		const capturedIds = new Set(this.sourceAnchors().map((anchor) => `${anchor.sessionId}\u0000${anchor.entryId}`));
+		const unseen = entries.filter((entry) => !capturedIds.has(`${sessionId}\u0000${entry.id}`));
 		for (const entry of unseen) {
-			appendFileSync(path, `${JSON.stringify({ sessionId, entryId: entry.id, entry } satisfies TraceRecord)}\n`, "utf8");
+			const anchor: SourceAnchor = {
+				sessionId,
+				entryId: entry.id,
+				contentHash: createHash("sha256").update(JSON.stringify(entry)).digest("hex"),
+			};
+			appendFileSync(this.anchorsPath, `${JSON.stringify(anchor)}\n`, "utf8");
 		}
 		return unseen.length;
 	}
 
-	capturedEntryCount(): number {
-		return readdirSync(this.tracesDir).reduce((count, file) => {
-			if (!file.endsWith(".jsonl")) return count;
-			return count + readFileSync(join(this.tracesDir, file), "utf8").split("\n").filter(Boolean).length;
-		}, 0);
+	sourceAnchorCount(): number {
+		return this.sourceAnchors().length;
 	}
 
 	private requireCurrentClaim(claimId: string): Claim {
@@ -150,6 +143,15 @@ export class KnowledgeStore {
 			claims.set(event.claimId, { ...claim, status: event.status, reason: event.reason });
 		}
 		return claims;
+	}
+
+	private sourceAnchors(): SourceAnchor[] {
+		if (!existsSync(this.anchorsPath)) return [];
+		return readFileSync(this.anchorsPath, "utf8")
+			.trim()
+			.split("\n")
+			.filter(Boolean)
+			.map((line) => JSON.parse(line) as SourceAnchor);
 	}
 
 	private events(): KnowledgeEvent[] {
