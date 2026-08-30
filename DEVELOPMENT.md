@@ -4,15 +4,10 @@ Append one entry for every completed implementation milestone. Keep completed en
 
 ## Planned Work
 
-0. **Trust, outcome, and cycle contract** — implement the policy in [CYCLE_POLICY.md](CYCLE_POLICY.md): untrusted-data handling, configured success/failure oracles, persistent recoverable cycle state, and a project lock.
-1. **Persistent wiki store** — implement the schema in [WIKI_SCHEMA.md](WIKI_SCHEMA.md), including pattern maintenance, contradiction handling, and stale-page retirement.
-2. **Evidence selection** — bounded sampling of verified, non-ambiguous successful and failed traces for a dream cycle.
-3. **Manual `/wiki-dream`** — an LLM maintainer that creates reviewable, minimal, evidence-backed wiki patches.
-4. **Versioned inactive skill proposals** — derive candidate skill changes from wiki patterns without activation.
-5. **Deterministic evaluation and safety gate** — baseline, held-out tasks, thresholds, time/cost limits, regression tolerance, and static safety checks.
-6. **Manual promotion and rollback** — show the reviewer the evidence, patches, diff, evaluation, and rollback target; activate only explicit approvals.
-7. **Observability, governance, and tests** — status metrics, migration/export/reset/retention, security and failure tests, and package documentation.
-8. **Opt-in automation** — only after the manual evaluator and approval flow are reliable; scheduling never bypasses the approval gate.
+1. **Manual wiki dream** — select bounded, verified project traces; have an LLM propose a concise wiki patch; let the user accept or reject it.
+2. **Inactive skill proposals** — derive candidate skill changes from accepted wiki patterns without activation.
+3. **Evaluation and approval** — add a project-specific evaluator, rollback, and explicit promotion approval.
+4. **Automation** — opt-in scheduling only after the manual flow proves useful; it never bypasses approval.
 
 ## 2026-08-30 — Provenance-backed foundation
 
@@ -51,3 +46,10 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 - Made manual reviewer approval a mandatory promotion gate; evaluation success alone can never activate a candidate skill.
 - Extended [WIKI_SCHEMA.md](WIKI_SCHEMA.md) with cycle artifacts and page maintenance metadata.
 - Deliberate boundary: this is a policy and schema milestone. No dream, proposal, evaluator, or promotion command exists yet.
+
+## 2026-08-30 — Ponytail simplification
+
+- Removed the unused generic claim ledger and its merge/rejection machinery; the Markdown wiki will be the only derived-knowledge layer.
+- Retained Pi-native source anchors, exact-file verification, `/wiki-status`, and `/wiki-verify`.
+- Replaced the premature cycle, outcome, and promotion schema with a minimal reviewed-wiki contract in [WIKI_SCHEMA.md](WIKI_SCHEMA.md).
+- Deliberate boundary: manual `/wiki-dream` is the next feature; outcome oracles, evaluators, and automation remain deferred.

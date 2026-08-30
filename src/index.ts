@@ -19,12 +19,8 @@ export default function (pi: ExtensionAPI) {
 		description: "Show the current project knowledge state",
 		handler: async (_args, ctx) => {
 			const store = new KnowledgeStore(storageRoot, ctx.cwd);
-			const claims = store.currentClaims();
 			const anchors = store.sourceAnchorCount();
-			ctx.ui.notify(
-				`Wiki Skills: ${claims.length} current claim${claims.length === 1 ? "" : "s"}; ${anchors} source anchor${anchors === 1 ? "" : "s"}.`,
-				"info",
-			);
+			ctx.ui.notify(`Wiki Skills: ${anchors} source anchor${anchors === 1 ? "" : "s"}.`, "info");
 		},
 	});
 
