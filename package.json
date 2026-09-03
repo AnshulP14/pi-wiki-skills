@@ -4,16 +4,17 @@
   "description": "Evidence-backed memory dreaming and skill evolution for Pi",
   "type": "module",
   "keywords": ["pi-package", "pi-extension", "agent-memory", "skills"],
-  "files": ["src", "README.md", "LICENSE", "WIKI_SCHEMA.md"],
+  "files": ["src", "skills", "README.md", "LICENSE", "WIKI_SCHEMA.md"],
   "pi": {
-    "extensions": ["./src/index.ts"]
+    "extensions": ["./src/index.ts"],
+    "skills": ["./skills"]
   },
   "peerDependencies": {
     "@earendil-works/pi-ai": "*",
     "@earendil-works/pi-coding-agent": "*"
   },
   "scripts": {
-    "check": "node --experimental-strip-types --check src/dream.ts && node --experimental-strip-types --check src/knowledge-store.ts && node --experimental-strip-types --check src/source-resolver.ts && node --experimental-strip-types --check src/wiki-store.ts && node --experimental-strip-types --check src/index.ts",
+    "check": "node --experimental-strip-types --check src/dream.ts && node --experimental-strip-types --check src/project-vcc.ts && node --experimental-strip-types --check src/knowledge-store.ts && node --experimental-strip-types --check src/source-resolver.ts && node --experimental-strip-types --check src/wiki-store.ts && node --experimental-strip-types --check src/index.ts",
     "test": "node --test test/*.test.ts"
   },
   "license": "MIT"

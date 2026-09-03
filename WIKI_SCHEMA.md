@@ -1,6 +1,6 @@
 # Wiki Store Schema
 
-The wiki compiles verified Pi session evidence into concise project knowledge. `/wiki-dream` proposes changes; the user accepts or rejects them.
+The wiki compiles verified Pi session evidence into concise project knowledge. `/wiki-dream` proposes changes; the user accepts or rejects them. The project root also contains `source-anchors.jsonl`, append-only `dream-runs.jsonl`, and append-only `approval-claims.jsonl`; each completed review records the exact source-anchor keys considered, so later dreams process only new verified entries.
 
 ## Location
 
@@ -47,12 +47,12 @@ Sources reference `source-anchors.jsonl`. Each must resolve and verify before it
 
 - Pattern: `018f...`
 - Sources: `session-id/entry-id`
-- Change: Created the pattern page.
+- Change: Created, updated, or deleted the pattern page.
 ```
 
 ## Invariants
 
 - Pattern pages change only through a reviewed wiki patch.
-- The evolution log is append-only.
+- The evolution log and approval-claim ledger are append-only.
 - Missing or unverifiable anchors cannot support a page.
 - Future skill promotion requires explicit user approval.

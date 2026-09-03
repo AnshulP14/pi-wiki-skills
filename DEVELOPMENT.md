@@ -59,3 +59,19 @@ Commit: [`070383c`](https://github.com/AnshulP14/pi-wiki-skills/commit/070383c)
 - Added `/wiki-dream`: it reads up to eight verified project anchors, bounds trace and existing-wiki context, and asks the selected Pi model for one JSON pattern proposal.
 - The proposal is rendered as a Markdown page and requires explicit user approval before a new pattern page and append-only evolution entry are written.
 - Deliberate boundary: it creates one new page only. It does not update pages, classify outcomes, propose skills, or run automatically.
+
+## 2026-09-02 — Project-wide reviewed dream batches
+
+- `/wiki-dream` now discovers every readable Pi session JSONL whose header `cwd` matches the project, anchors previously unseen entries, and considers all newly verified entries rather than the newest eight.
+- Added deterministic VCC-style, source-preserving digest batches and required proposed pages to cite one to twelve exact source references from those batches.
+- Added append-only `dream-runs.jsonl`; approval, rejection, and explicit `null` outcomes advance the reviewed-anchor cursor, while model failures and invalid proposals remain eligible for retry.
+- Deliberate boundary: this is deterministic compression, not a dependency on Blackhole internals; it does not yet merge/update patterns or add multi-reviewer policy.
+
+## 2026-09-03 — Staged Dream review and final-claim ledger
+
+- Reworked `/wiki-dream` into per-session VCC analysis, with one selected full wiki page loaded at a time and further page selection available after each step.
+- Added final-only append-only approval claims, recording each consolidated claim and its explicit approve/reject outcome without retaining per-session suggestions.
+- Added approval-gated create, update, and delete wiki actions; deletions remain visible in the append-only evolution log.
+- Expanded assistant VCC excerpts to 2,000 characters while retaining the 180-character limit for ordinary entries.
+- Verified package checks, eight focused tests, and an interactive all-history Dream run.
+- Deliberate boundary: no merge operation, no multi-reviewer policy, and no automatic promotion.
